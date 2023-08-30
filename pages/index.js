@@ -65,14 +65,21 @@ export default function MoveableDiv() {
     <div className="w-full min-h-screen flex relative">
       <div
         ref={movableRef}
-        className="w-20 h-20 bg-blue-500 z-50"
+        className="z-50"
         style={{
           position: "absolute",
           top: `${top}px`,
           left: `${left}px`,
         }}
       >
-        Move me with arrow keys!
+        <span 
+        className="text-2xl"
+          style={{ 
+            animation: 'pulsate 1.5s infinite', 
+            display: 'inline-block'
+          }}>
+          🚀
+        </span>
       </div>
       <div className="w-1/2 min-h-screen flex flex-col items-center">
         <div ref={borderedDivRefs[0]} className="border border-black h-10 w-3/4"></div>
