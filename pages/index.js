@@ -54,15 +54,15 @@ export default function MoveableDiv() {
           const dy = mousePosition.y - (rocketPosition.top + rocketPosition.height / 2);
 
           // Define a "speed" for how fast/far the rocket should move
-          const speed = 50;  // This can be adjusted
+          const speed = .5;  // This can be adjusted
 
           // Normalize the difference to get the direction
-          const distance = Math.sqrt(dx * dx + dy * dy);
-          const directionX = dx / distance;
-          const directionY = dy / distance;
+          // const distance = Math.sqrt(dx * dx + dy * dy);
+          // const directionX = dx / distance;
+          // const directionY = dy / distance;
 
-          newTop += directionY * speed;
-          newLeft += directionX * speed;
+          newTop += dy * speed;
+          newLeft += dx * speed;
           break;
       default:
         break;
@@ -130,7 +130,7 @@ const computeRotation = () => {
     <div className="w-full min-h-screen flex relative">
       <div
         ref={movableRef}
-        className="z-50"
+        className="z-50 movable-rocket"
         style={{
           position: "absolute",
           top: `${top}px`,
