@@ -3,6 +3,8 @@ import { useState, useEffect, useRef } from "react";
 export default function MoveableDiv() {
   const [top, setTop] = useState(0);
   const [left, setLeft] = useState(0);
+  const [isMoving, setIsMoving] = useState(false);
+  const [movementTimeout, setMovementTimeout] = useState(null);
 
   const movableRef = useRef(null);
   const borderedDivRefs = [useRef(null), useRef(null), useRef(null)];
@@ -24,6 +26,7 @@ export default function MoveableDiv() {
   };
 
   const handleKeyDown = (event) => {
+    setIsMoving(true);
     let newTop = top;
     let newLeft = left;
 
@@ -52,6 +55,15 @@ export default function MoveableDiv() {
 
     setTop(newTop);
     setLeft(newLeft);
+
+    if (movementTimeout) {
+      clearTimeout(movementTimeout);
+  }
+    const timeout = setTimeout(() => {
+      setIsMoving(false);
+    }, 150)
+
+    setMovementTimeout(timeout);
   };
 
   useEffect(() => {
@@ -75,7 +87,7 @@ export default function MoveableDiv() {
         <span 
         className="text-2xl"
           style={{ 
-            animation: 'pulsate 1.5s infinite', 
+            animation: isMoving ? 'pulsate 1.5s infinite' : 'none', 
             display: 'inline-block'
           }}>
           🚀
