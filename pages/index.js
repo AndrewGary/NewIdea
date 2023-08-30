@@ -5,6 +5,8 @@ export default function MoveableDiv() {
   const [left, setLeft] = useState(0);
   const [isMoving, setIsMoving] = useState(false);
   const [movementTimeout, setMovementTimeout] = useState(null);
+  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+
 
   const movableRef = useRef(null);
   const borderedDivRefs = [useRef(null), useRef(null), useRef(null)];
@@ -67,6 +69,38 @@ export default function MoveableDiv() {
   };
 
   useEffect(() => {
+    const updateMousePosition = (e) => {
+        setMousePosition({ x: e.clientX, y: e.clientY });
+    };
+
+    window.addEventListener('mousemove', updateMousePosition);
+
+    return () => window.removeEventListener('mousemove', updateMousePosition);
+}, []);
+
+const computeRotation = () => {
+
+  if (!movableRef.current) {
+    return 0;  // return a default value if ref isn't set
+}
+
+  const rocketPosition = movableRef.current.getBoundingClientRect();
+  const rocketCenter = {
+      x: rocketPosition.left + rocketPosition.width / 2,
+      y: rocketPosition.top + rocketPosition.height / 2,
+  };
+
+  const dx = mousePosition.x - rocketCenter.x;
+  const dy = mousePosition.y - rocketCenter.y;
+
+  const angle = Math.atan2(dy, dx) * (180 / Math.PI);
+
+  return angle + 53;  // +90 to adjust since the rocket's default is up
+};
+
+
+
+  useEffect(() => {
     window.addEventListener("keydown", handleKeyDown);
     return () => {
       window.removeEventListener("keydown", handleKeyDown);
@@ -82,6 +116,7 @@ export default function MoveableDiv() {
           position: "absolute",
           top: `${top}px`,
           left: `${left}px`,
+          transform: `rotate(${computeRotation()}deg)`
         }}
       >
         <span 
