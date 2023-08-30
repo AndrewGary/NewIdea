@@ -45,6 +45,25 @@ export default function MoveableDiv() {
       case "ArrowRight":
         newLeft = left + 10;
         break;
+        case " ":
+          // Get the current rocket position
+          const rocketPosition = movableRef.current.getBoundingClientRect();
+
+          // Compute the difference between the rocket's position and mouse position
+          const dx = mousePosition.x - (rocketPosition.left + rocketPosition.width / 2);
+          const dy = mousePosition.y - (rocketPosition.top + rocketPosition.height / 2);
+
+          // Define a "speed" for how fast/far the rocket should move
+          const speed = 50;  // This can be adjusted
+
+          // Normalize the difference to get the direction
+          const distance = Math.sqrt(dx * dx + dy * dy);
+          const directionX = dx / distance;
+          const directionY = dy / distance;
+
+          newTop += directionY * speed;
+          newLeft += directionX * speed;
+          break;
       default:
         break;
     }
